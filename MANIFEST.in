@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include rama_aluminium *.css
+recursive-include rama_aluminium *.csv
+recursive-include rama_aluminium *.html
+recursive-include rama_aluminium *.ico
+recursive-include rama_aluminium *.js
+recursive-include rama_aluminium *.json
+recursive-include rama_aluminium *.md
+recursive-include rama_aluminium *.png
+recursive-include rama_aluminium *.py
+recursive-include rama_aluminium *.svg
+recursive-include rama_aluminium *.txt
+recursive-exclude rama_aluminium *.pyc
