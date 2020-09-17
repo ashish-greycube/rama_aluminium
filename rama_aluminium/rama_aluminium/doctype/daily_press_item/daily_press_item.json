@@ -1,0 +1,121 @@
+{
+ "creation": "2020-09-17 16:09:36.702399",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "from_time",
+  "to_time",
+  "job_order",
+  "die",
+  "item",
+  "finish",
+  "length",
+  "no_of_billets",
+  "billet_length",
+  "no_of_pcs",
+  "cast",
+  "actual_weight_per_meter",
+  "input_in_kg",
+  "output_in_kg"
+ ],
+ "fields": [
+  {
+   "fieldname": "from_time",
+   "fieldtype": "Datetime",
+   "label": "From Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_time",
+   "fieldtype": "Datetime",
+   "label": "To Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "job_order",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job Order",
+   "options": "Job Order CT",
+   "reqd": 1
+  },
+  {
+   "fieldname": "die",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Die",
+   "options": "Serial No",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "finish",
+   "fieldtype": "Data",
+   "label": "Finish"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Float",
+   "label": "Length"
+  },
+  {
+   "fieldname": "no_of_billets",
+   "fieldtype": "Data",
+   "label": "No Of Billets",
+   "reqd": 1
+  },
+  {
+   "fieldname": "billet_length",
+   "fieldtype": "Data",
+   "label": "Billet Length",
+   "reqd": 1
+  },
+  {
+   "fieldname": "no_of_pcs",
+   "fieldtype": "Int",
+   "label": "No Of Pcs",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cast",
+   "fieldtype": "Select",
+   "label": "Cast",
+   "options": "Rama\nMaaden",
+   "reqd": 1
+  },
+  {
+   "fieldname": "actual_weight_per_meter",
+   "fieldtype": "Float",
+   "label": "Actual Weight Per Meter",
+   "reqd": 1
+  },
+  {
+   "fieldname": "input_in_kg",
+   "fieldtype": "Float",
+   "label": "Input in KG"
+  },
+  {
+   "fieldname": "output_in_kg",
+   "fieldtype": "Float",
+   "label": "Output in KG"
+  }
+ ],
+ "istable": 1,
+ "modified": "2020-09-17 16:09:36.702399",
+ "modified_by": "Administrator",
+ "module": "Rama Aluminium",
+ "name": "Daily Press Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

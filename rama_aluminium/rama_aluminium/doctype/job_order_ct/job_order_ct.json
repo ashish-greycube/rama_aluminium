@@ -1,0 +1,107 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2020-09-17 15:42:34.394870",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "job_order_date",
+  "sales_order_reference",
+  "jo_item_sb",
+  "items",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "JO-.YY.-.MM.-.#",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "job_order_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Job Order Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sales_order_reference",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Sales Order Reference",
+   "options": "Sales Order",
+   "reqd": 1
+  },
+  {
+   "fieldname": "jo_item_sb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Job Order Items",
+   "options": "Job Order Item CT",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Job Order CT",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2020-09-17 15:42:34.394870",
+ "modified_by": "Administrator",
+ "module": "Rama Aluminium",
+ "name": "Job Order CT",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Manufacturing Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Manufacturing User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
