@@ -11,24 +11,29 @@
   "item",
   "finish",
   "length",
+  "input_in_kg",
+  "cb_01",
   "no_of_billets",
   "billet_length",
   "no_of_pcs",
-  "cast",
+  "cast_item",
+  "multiplication_factor",
   "actual_weight_per_meter",
-  "input_in_kg",
   "output_in_kg"
  ],
  "fields": [
   {
+   "default": "Now",
    "fieldname": "from_time",
    "fieldtype": "Datetime",
+   "in_list_view": 1,
    "label": "From Time",
    "reqd": 1
   },
   {
    "fieldname": "to_time",
    "fieldtype": "Datetime",
+   "in_list_view": 1,
    "label": "To Time",
    "reqd": 1
   },
@@ -41,6 +46,7 @@
    "reqd": 1
   },
   {
+   "description": "used_for_qty of die will be updated with output qty",
    "fieldname": "die",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -51,6 +57,7 @@
   {
    "fieldname": "item",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Item",
    "options": "Item",
    "reqd": 1
@@ -61,9 +68,11 @@
    "label": "Finish"
   },
   {
+   "description": "from job order item",
    "fieldname": "length",
    "fieldtype": "Float",
-   "label": "Length"
+   "label": "Length",
+   "read_only": 1
   },
   {
    "fieldname": "no_of_billets",
@@ -84,31 +93,44 @@
    "reqd": 1
   },
   {
-   "fieldname": "cast",
-   "fieldtype": "Select",
-   "label": "Cast",
-   "options": "Rama\nMaaden",
-   "reqd": 1
-  },
-  {
    "fieldname": "actual_weight_per_meter",
    "fieldtype": "Float",
    "label": "Actual Weight Per Meter",
    "reqd": 1
   },
   {
+   "description": "No of billet * Billet Size * Multiplication factor",
    "fieldname": "input_in_kg",
    "fieldtype": "Float",
    "label": "Input in KG"
   },
   {
+   "description": "Actual Weight per Mete* No PCs* Length",
    "fieldname": "output_in_kg",
    "fieldtype": "Float",
    "label": "Output in KG"
+  },
+  {
+   "fieldname": "cb_01",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "filtered based on company &gt; raw_material_item_group",
+   "fieldname": "cast_item",
+   "fieldtype": "Link",
+   "label": "Cast Item",
+   "options": "Item"
+  },
+  {
+   "fetch_from": "cast_item.multiplication_factor_cf",
+   "fieldname": "multiplication_factor",
+   "fieldtype": "Float",
+   "label": "Multiplication Factor",
+   "read_only": 1
   }
  ],
  "istable": 1,
- "modified": "2020-09-17 16:09:36.702399",
+ "modified": "2020-09-21 16:21:43.162927",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Daily Press Item",
