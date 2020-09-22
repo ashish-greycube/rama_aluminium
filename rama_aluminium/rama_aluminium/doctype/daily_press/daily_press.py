@@ -7,45 +7,71 @@ import frappe
 from frappe.model.document import Document
 from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext import get_default_company
+from frappe.utils import flt
 
 class DailyPress(Document):
+	def validate(self):
+		self.validate_items()
+
 	def on_submit(self):
+		self.make_die_entries()
 		self.make_stock_entry()
+	
+	def on_cancel(self):
+		self.deduct_die_entries()
+
+	def validate_items(self):
+		items=self.get("items")
+		for item in items:		
+			item.input_in_kg=flt(item.no_of_billets) * flt(item.billet_length) * flt(item.multiplication_factor)
+			item.output_in_kg =flt(item.actual_weight_per_meter) * flt(item.no_of_pcs) * flt(item.length)
+
+	def make_die_entries(self):
+		items=self.get("items")
+		for item in items:
+			used_for_qty_cf = frappe.db.get_value('Serial No', item.die, 'used_for_qty_cf')
+			frappe.db.set_value('Serial No', item.die, 'used_for_qty_cf', flt(used_for_qty_cf+item.output_in_kg))
+
+	def deduct_die_entries(self):
+		items=self.get("items")
+		for item in items:
+			used_for_qty_cf = frappe.db.get_value('Serial No', item.die, 'used_for_qty_cf')
+			frappe.db.set_value('Serial No', item.die, 'used_for_qty_cf', flt(used_for_qty_cf-item.output_in_kg))
 
 	def make_stock_entry(self):
+		default_scrap_item_cf = frappe.db.get_value('Company', self.company, 'default_scrap_item_cf')
+		default_scrap_item_warehouse_cf = frappe.db.get_value('Company', self.company, 'default_scrap_item_warehouse_cf')
+
 		fg_warehouse=frappe.db.get_single_value('Manufacturing Settings', 'default_fg_warehouse')
 		
-		item_defaults = get_item_defaults('1001-07',get_default_company())
-		source_warehouse=item_defaults.item_defaults[0].default_warehouse
+		items=self.get("items")
+		for item in items:
+			stock_entry = frappe.new_doc("Stock Entry")
+			stock_entry.stock_entry_type = 'Manufacture'
+			stock_entry.company = self.company
+			stock_entry.daily_press=self.name
+			stock_entry.daily_press_item_name=item.name
+			# raw material entry
+			row = stock_entry.append('items', {})
+			item_defaults = get_item_defaults(item.cast_item,self.company)
+			source_warehouse=item_defaults.item_defaults[0].default_warehouse			
+			row.s_warehouse=source_warehouse
+			row.item_code=item.cast_item
+			row.qty=item.input_in_kg
+			row.uom=frappe.db.get_value('Item', item.cast_item, 'stock_uom')
+			# finished item entry
+			row = stock_entry.append('items', {})
+			row.t_warehouse=fg_warehouse
+			row.item_code=item.item
+			row.qty=item.output_in_kg
+			row.uom=frappe.db.get_value('Item', item.item, 'stock_uom')			
+			# scrap item entry
+			row = stock_entry.append('items', {})
+			row.allow_zero_valuation_rate=1
+			row.basic_rate=0
+			row.t_warehouse=default_scrap_item_warehouse_cf
+			row.item_code=default_scrap_item_cf
+			row.qty=flt(item.input_in_kg)-flt(item.output_in_kg)
+			row.uom=frappe.db.get_value('Item',default_scrap_item_cf, 'stock_uom')			
 
-
-		work_order = frappe.get_doc("Work Order", work_order_id)
-		if not frappe.db.get_value("Warehouse", work_order.wip_warehouse, "is_group") \
-				and not work_order.skip_transfer:
-			wip_warehouse = work_order.wip_warehouse
-		else:
-			wip_warehouse = None
-
-		stock_entry = frappe.new_doc("Stock Entry")
-		stock_entry.purpose = 'Manufacture'
-		stock_entry.work_order = work_order_id
-		stock_entry.company = work_order.company
-		stock_entry.from_bom = 1
-		stock_entry.bom_no = work_order.bom_no
-		stock_entry.use_multi_level_bom = work_order.use_multi_level_bom
-		stock_entry.fg_completed_qty = qty or (flt(work_order.qty) - flt(work_order.produced_qty))
-		if work_order.bom_no:
-			stock_entry.inspection_required = frappe.db.get_value('BOM',
-				work_order.bom_no, 'inspection_required')
-
-		if purpose=="Material Transfer for Manufacture":
-			stock_entry.to_warehouse = wip_warehouse
-			stock_entry.project = work_order.project
-		else:
-			stock_entry.from_warehouse = wip_warehouse
-			stock_entry.to_warehouse = work_order.fg_warehouse
-			stock_entry.project = work_order.project
-
-		stock_entry.set_stock_entry_type()
-		stock_entry.get_items()
-		return stock_entry.as_dict()
+			stock_entry.insert(ignore_permissions=True)

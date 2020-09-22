@@ -44,13 +44,15 @@ def sales_order_create_job_order(source_name, target_doc=None):
 	job_order_list=frappe.db.get_list('Job Order CT',filters={'sales_order_reference': source_name },fields=['name'], limit=1)
 	print('Job_order_list',job_order_list)
 	if len(job_order_list)>0:
-		frappe.throw(_("Job Order already exist {0}").format("<a href='desk#Form/Job Order CT/{0}'> {0} </a>".format(job_order_list[0]['name'])))
+		frappe.throw(_("Job Order already exist {0}  for this Sales Order.").format("<a href='desk#Form/Job Order CT/{0}'> {0} </a>".format(job_order_list[0]['name'])))
 
 	def set_missing_values(source, target):
 		pass
 
 	def update_main(source, target, source_parent):
 		target.sales_order_reference=source.name
+		target.company=source_parent.company
+		target.customer=source_parent.customer
 		target.job_order_date=nowdate()
 
 	def update_item(source_doc, target_doc, source_parent):
@@ -83,8 +85,6 @@ def sales_order_create_job_order(source_name, target_doc=None):
 
 @frappe.whitelist()
 def make_job_order(source_name, target_doc=None):
-	job_order = frappe.db.get_value("Job Order CT", source_name, ["job_order_date"], as_dict = 1)
-
 	def set_missing_values(source, target):
 		pass
 		# target.run_method("set_missing_values")
@@ -95,6 +95,7 @@ def make_job_order(source_name, target_doc=None):
 		target.job_order=source_parent.name
 		target.item=obj.item
 		target.length=obj.length
+		target.job_order_item_name_ct=obj.name
 
 
 
@@ -105,17 +106,27 @@ def make_job_order(source_name, target_doc=None):
 			"Job Order CT": {
 				"doctype": "Daily Press",
 				"validation": {
-					"docstatus": ["=", 0]
+					"docstatus": ["=", 1]
 				},
 				"postprocess": update_main_item
 			},
 			"Job Order Item CT": {
 				"doctype": "Daily Press Item",
-				"add_if_empty": True,
-				"postprocess": update_item
+				"postprocess": update_item,
+				# "condition": lambda doc: (doc.bom_item_config_cf==None)
 			}
 		}, target_doc, set_missing_values, ignore_permissions=True)
 
 	# postprocess: fetch shipping address, set missing values
 
 	return doclist    
+
+@frappe.whitelist()
+def update_job_order_CT_packed_qty(self,method):
+	fg_warehouse=frappe.db.get_single_value('Manufacturing Settings', 'default_fg_warehouse')
+	job_order_item_name_ct = frappe.db.get_value('Daily Press Item', self.daily_press_item_name, 'job_order_item_name_ct')
+	items=self.get("items")
+	for item in items:
+		if item.t_warehouse==fg_warehouse :
+			frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', item.qty)
+			break
