@@ -7,13 +7,14 @@
   "item",
   "weight",
   "length",
+  "cb_jo_1",
   "qty",
   "total_weight",
-  "produced_qty",
-  "packed_qty"
+  "produced_qty"
  ],
  "fields": [
   {
+   "columns": 3,
    "fieldname": "item",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -22,40 +23,49 @@
    "reqd": 1
   },
   {
+   "columns": 1,
    "fieldname": "weight",
    "fieldtype": "Float",
-   "label": "Weight"
+   "in_list_view": 1,
+   "label": "Weight",
+   "reqd": 1
   },
   {
+   "columns": 1,
    "fieldname": "length",
    "fieldtype": "Float",
-   "label": "Length"
+   "in_list_view": 1,
+   "label": "Length",
+   "reqd": 1
   },
   {
+   "columns": 1,
    "fieldname": "qty",
    "fieldtype": "Float",
-   "label": "Qty"
+   "in_list_view": 1,
+   "label": "Qty",
+   "reqd": 1
   },
   {
    "fieldname": "total_weight",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Total Weight"
   },
   {
    "fieldname": "produced_qty",
    "fieldtype": "Float",
+   "in_list_view": 1,
    "label": "Produced Qty",
    "read_only": 1
   },
   {
-   "fieldname": "packed_qty",
-   "fieldtype": "Float",
-   "label": "Packed Qty",
-   "read_only": 1
+   "fieldname": "cb_jo_1",
+   "fieldtype": "Column Break"
   }
  ],
  "istable": 1,
- "modified": "2020-09-17 15:35:56.469619",
+ "modified": "2020-09-22 07:38:01.016038",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Job Order Item CT",
