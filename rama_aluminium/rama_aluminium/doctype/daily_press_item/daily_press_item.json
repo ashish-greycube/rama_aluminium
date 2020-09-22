@@ -11,15 +11,15 @@
   "item",
   "finish",
   "length",
-  "input_in_kg",
+  "actual_weight_per_meter",
+  "output_in_kg",
   "cb_01",
   "no_of_billets",
   "billet_length",
   "no_of_pcs",
   "cast_item",
   "multiplication_factor",
-  "actual_weight_per_meter",
-  "output_in_kg"
+  "input_in_kg"
  ],
  "fields": [
   {
@@ -91,13 +91,13 @@
    "reqd": 1
   },
   {
-   "description": "No of billet * Billet Size * Multiplication factor",
+   "description": "No of billet * Billet Length * Multiplication factor",
    "fieldname": "input_in_kg",
    "fieldtype": "Float",
    "label": "Input in KG"
   },
   {
-   "description": "Actual Weight per Mete* No PCs* Length",
+   "description": "Actual Weight per Meter* No PCs* Length",
    "fieldname": "output_in_kg",
    "fieldtype": "Float",
    "label": "Output in KG"
@@ -130,7 +130,7 @@
   }
  ],
  "istable": 1,
- "modified": "2020-09-22 07:01:18.509581",
+ "modified": "2020-09-22 07:29:27.639501",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Daily Press Item",
