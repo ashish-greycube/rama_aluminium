@@ -55,14 +55,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "item",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Item",
-   "options": "Item",
-   "reqd": 1
-  },
-  {
    "fieldname": "finish",
    "fieldtype": "Data",
    "label": "Finish"
@@ -127,10 +119,18 @@
    "fieldtype": "Float",
    "label": "Multiplication Factor",
    "read_only": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
   }
  ],
  "istable": 1,
- "modified": "2020-09-21 16:21:43.162927",
+ "modified": "2020-09-22 07:01:18.509581",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Daily Press Item",
