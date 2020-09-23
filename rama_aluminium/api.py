@@ -50,8 +50,8 @@ def sales_order_create_job_order(source_name, target_doc=None):
 
 	def update_main(source, target, source_parent):
 		target.sales_order_reference=source.name
-		target.company=source_parent.company
-		target.customer=source_parent.customer
+		target.company=source.company
+		target.customer=source.customer
 		target.job_order_date=nowdate()
 
 	def update_item(source_doc, target_doc, source_parent):
