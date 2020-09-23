@@ -125,7 +125,8 @@ doc_events = {
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
-# override_doctype_dashboards = {
-# 	"Task": "rama_aluminium.task.get_dashboard_data"
-# }
+override_doctype_dashboards = {
+	"Serial No": "rama_aluminium.config.serial_no_dashboard.get_data",
+	"Sales Order": "rama_aluminium.config.sales_order_dashboard.get_data"
+}
 
