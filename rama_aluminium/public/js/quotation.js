@@ -7,7 +7,6 @@ frappe.ui.form.on('Quotation', {
                 },
                 async: false,
                 callback: (r) => {
-                    console.log(r)
                     frm.reload_doc()
                 },
                 error: (r) => {

@@ -16,7 +16,6 @@ frappe.ui.form.on('Sales Order', {
             freeze: true,
             callback: function (r) {
                 if (r.message) {
-                        console.log(r.message)
                         let url_list = '<a href="#Form/Job Order CT/' + r.message.name + '" target="_blank">' + r.message.name + '</a><br>'
                         urlpopup()
                         window.open("#Form/Job Order CT/" + r.message.name)

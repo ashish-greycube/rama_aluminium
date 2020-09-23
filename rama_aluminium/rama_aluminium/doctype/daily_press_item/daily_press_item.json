@@ -98,13 +98,15 @@
    "description": "No of billet * Billet Length * Multiplication factor",
    "fieldname": "input_in_kg",
    "fieldtype": "Float",
-   "label": "Input in KG"
+   "label": "Input in KG",
+   "read_only": 1
   },
   {
    "description": "Actual Weight per Meter* No PCs* Length",
    "fieldname": "output_in_kg",
    "fieldtype": "Float",
-   "label": "Output in KG"
+   "label": "Output in KG",
+   "read_only": 1
   },
   {
    "fieldname": "cb_01",
@@ -154,7 +156,7 @@
   }
  ],
  "istable": 1,
- "modified": "2020-09-22 14:47:12.040827",
+ "modified": "2020-09-23 07:19:11.752523",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Daily Press Item",

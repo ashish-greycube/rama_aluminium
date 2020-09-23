@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext import get_default_company
 from frappe.utils import flt
+from frappe import _
 
 class DailyPress(Document):
 	def validate(self):
@@ -25,6 +26,8 @@ class DailyPress(Document):
 		for item in items:		
 			item.input_in_kg=flt(item.no_of_billets) * flt(item.billet_length) * flt(item.multiplication_factor)
 			item.output_in_kg =flt(item.actual_weight_per_meter) * flt(item.no_of_pcs) * flt(item.length)
+			if item.output_in_kg > item.input_in_kg:
+				frappe.throw(_("Row #{0}, Output is more than Input. This will make scrap negative. Cannot proceed.".format(item.idx))) 
 
 	def make_die_entries(self):
 		items=self.get("items")

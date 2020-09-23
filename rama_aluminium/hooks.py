@@ -85,6 +85,7 @@ doctype_js = {
 doc_events = {
 	"Stock Entry": {
 		"on_submit": "rama_aluminium.api.update_job_order_CT_packed_qty",
+		"on_cancel": "rama_aluminium.api.update_job_order_CT_packed_qty"
 	}
 }
 

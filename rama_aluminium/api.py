@@ -42,7 +42,6 @@ def sales_order_create_job_order(source_name, target_doc=None):
 		frappe.throw(_("Not permitted"), frappe.PermissionError)   
 
 	job_order_list=frappe.db.get_list('Job Order CT',filters={'sales_order_reference': source_name },fields=['name'], limit=1)
-	print('Job_order_list',job_order_list)
 	if len(job_order_list)>0:
 		frappe.throw(_("Job Order already exist {0}  for this Sales Order.").format("<a href='desk#Form/Job Order CT/{0}'> {0} </a>".format(job_order_list[0]['name'])))
 
@@ -127,6 +126,9 @@ def update_job_order_CT_packed_qty(self,method):
 	job_order_item_name_ct = frappe.db.get_value('Daily Press Item', self.daily_press_item_name, 'job_order_item_name_ct')
 	items=self.get("items")
 	for item in items:
-		if item.t_warehouse==fg_warehouse :
+		if item.t_warehouse==fg_warehouse and method == "on_submit":
 			frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', item.qty)
+			break
+		elif item.t_warehouse==fg_warehouse and method == "on_cancel":
+			frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', 0)
 			break
