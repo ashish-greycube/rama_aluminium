@@ -9,6 +9,8 @@ from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext import get_default_company
 from frappe.utils import flt
 from frappe import _
+from erpnext.stock.utils import get_incoming_rate
+from frappe.utils import flt, comma_or, nowdate, nowtime
 
 class DailyPress(Document):
 	def validate(self):
@@ -62,10 +64,24 @@ class DailyPress(Document):
 			row.item_code=item.cast_item
 			row.qty=item.input_in_kg
 			row.uom=frappe.db.get_value('Item', item.cast_item, 'stock_uom')
+			args=frappe._dict({
+							"item_code": item.cast_item,
+							"warehouse": source_warehouse,
+							"posting_date": nowdate(),
+							"posting_time": nowtime(),
+							"qty": item.input_in_kg,
+							"serial_no": None,
+							"voucher_type": 'Stock Entry',
+							"voucher_no": None,
+							"company": self.company,
+							"allow_zero_valuation": 1,
+						})
+			row.basic_rate = get_incoming_rate(args)			
 			# finished item entry
 			row = stock_entry.append('items', {})
 			row.t_warehouse=fg_warehouse
 			row.item_code=item.item
+			row.basic_rate=(item.input_in_kg*get_incoming_rate(args))/item.output_in_kg
 			row.qty=item.output_in_kg
 			row.uom=frappe.db.get_value('Item', item.item, 'stock_uom')			
 			# scrap item entry
