@@ -65,6 +65,7 @@
   },
   {
    "description": "from job order item",
+   "fetch_from": "item.length_cf",
    "fieldname": "length",
    "fieldtype": "Float",
    "label": "Length",
@@ -156,7 +157,7 @@
   }
  ],
  "istable": 1,
- "modified": "2020-09-23 07:19:11.752523",
+ "modified": "2020-09-24 10:29:22.450400",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Daily Press Item",
