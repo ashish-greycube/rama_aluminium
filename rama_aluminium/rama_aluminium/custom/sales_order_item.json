@@ -229,7 +229,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Sales Order Item",
-   "fetch_from": "item_code.length_cf",
+   "fetch_from": "",
    "fetch_if_empty": 0,
    "fieldname": "length_cf",
    "fieldtype": "Float",

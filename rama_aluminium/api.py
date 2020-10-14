@@ -13,9 +13,8 @@ def quotation_calculate_price_by_weight(doc):
 	qo_items=quotation.get("items")
 	if quotation.calculate_price_by_weight_cf ==1:
 		for item in qo_items:
-			if item.length_cf== None:
-				legnth=frappe.db.get_value('Item', item.item_code, 'length_cf')
-				item.length_cf=length
+			if item.length_cf== None or item.length_cf==0:
+				frappe.throw(_("Length cannot be blank for row # {0}").format(item.idx))
 			if item.catalog_meter_weight_cf == None:
 				item.catalog_meter_weight_cf=item.weight_per_unit
 			item.total_weight_cf=item.length_cf*item.qty*item.catalog_meter_weight_cf
