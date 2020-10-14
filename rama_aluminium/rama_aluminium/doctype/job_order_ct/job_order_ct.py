@@ -7,4 +7,8 @@ from __future__ import unicode_literals
 from frappe.model.document import Document
 
 class JobOrderCT(Document):
-	pass
+	def on_submit(self):
+		self.db_set("status", 'In Process')
+
+	def on_cancel(self):
+		self.db_set("status", 'Cancelled')

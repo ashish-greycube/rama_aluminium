@@ -24,7 +24,8 @@ frappe.ui.form.on('Daily Press', {
 							default: frm.doc.customer || undefined
 						}],
 						get_query_filters: {
-							docstatus: 1
+							docstatus: 1,
+							status:'In Process'
 						}
 					})
 				}, __("Get items from"));
