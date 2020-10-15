@@ -98,7 +98,7 @@ def make_job_order(source_name, target_doc=None):
 
 
 	def update_main_item(source,target,source_parent):
-		pass
+		target.naming_series='DPR-.YY.-.MM.-.#'
 
 	doclist = get_mapped_doc("Job Order CT", source_name, {
 			"Job Order CT": {
