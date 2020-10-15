@@ -142,8 +142,7 @@ def update_job_order_CT_packed_qty(self,method):
 	JO=frappe.get_doc('Job Order CT', job_order_name)
 	for item in JO.get("items"):
 		if item.produced_qty < item.qty:	
-			all_produced_qty_correct=False
-
+			all_JO_produced_qty_correct=False
 	if method == "on_submit" and all_JO_produced_qty_correct==True:
 		frappe.db.set_value('Job Order CT', job_order_name, 'status', 'Completed')
 	if method == "on_cancel" and all_JO_produced_qty_correct==False:
