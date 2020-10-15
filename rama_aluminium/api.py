@@ -89,7 +89,7 @@ def make_job_order(source_name, target_doc=None):
 		# target.run_method("calculate_taxes_and_totals")
 
 	def update_item(obj, target, source_parent):
-		target.from_time=get_datetime()
+		target.from_time=nowtime()
 		target.job_order=source_parent.name
 		target.item=obj.item
 		target.length=obj.length
