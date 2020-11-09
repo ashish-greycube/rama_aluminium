@@ -19,9 +19,13 @@
   "cb_01",
   "cast_item",
   "multiplication_factor",
+  "test_no_of_billets",
+  "test_billet_length",
+  "test_input_in_kg",
   "no_of_billets",
   "billet_length",
   "input_in_kg",
+  "total_input_in_kg",
   "reference_section",
   "job_order_item_name_ct"
  ],
@@ -72,13 +76,13 @@
   },
   {
    "fieldname": "no_of_billets",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "No Of Billets",
    "reqd": 1
   },
   {
    "fieldname": "billet_length",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "Billet Length",
    "reqd": 1
   },
@@ -98,8 +102,8 @@
    "description": "No of billet * Billet Length * Multiplication factor",
    "fieldname": "input_in_kg",
    "fieldtype": "Float",
-   "label": "Input in KG",
-   "read_only": 1
+   "label": "Actual Input in Kg",
+   "reqd": 1
   },
   {
    "description": "Actual Weight per Meter* No PCs* Length",
@@ -153,10 +157,35 @@
   {
    "fieldname": "section_break_6",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "test_no_of_billets",
+   "fieldtype": "Float",
+   "label": "No Of Billets (Test)"
+  },
+  {
+   "fieldname": "test_billet_length",
+   "fieldtype": "Float",
+   "label": "Billet Length (Test)"
+  },
+  {
+   "default": "0",
+   "description": "For Test ,No of billet * Billet Length * Multiplication factor",
+   "fieldname": "test_input_in_kg",
+   "fieldtype": "Float",
+   "label": "Test Input in Kg"
+  },
+  {
+   "description": "Test Input + Actual Input",
+   "fieldname": "total_input_in_kg",
+   "fieldtype": "Float",
+   "label": "Total Input in KG",
+   "read_only": 1,
+   "reqd": 1
   }
  ],
  "istable": 1,
- "modified": "2020-10-15 12:48:00.348320",
+ "modified": "2020-11-06 12:54:21.272081",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Daily Press Item",
