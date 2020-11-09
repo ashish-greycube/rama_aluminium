@@ -50,13 +50,43 @@ frappe.ui.form.on('Daily Press Item', {
 	},
 	length: function (frm, cdt, cdn) {
 		set_output_in_kg(frm, cdt, cdn);
+	},
+	test_no_of_billets: function (frm, cdt, cdn) {
+		set_test_input(frm, cdt, cdn);
+	},
+	test_billet_length: function (frm, cdt, cdn) {
+		set_test_input(frm, cdt, cdn);
+	},
+	test_input_in_kg: function (frm, cdt, cdn) {
+		set_total_input_in_kg(frm, cdt, cdn);
+	},
+	input_in_kg: function (frm, cdt, cdn) {
+		set_total_input_in_kg(frm, cdt, cdn);
 	}
 });
 
+function set_test_input(frm,cdt,cdn){
+	let row = locals[cdt][cdn];
+	if (row.test_no_of_billets !== undefined && row.test_billet_length !== undefined && row.multiplication_factor !== undefined) {
+		row.test_input_in_kg = (row.test_no_of_billets * row.test_billet_length * row.multiplication_factor)
+		frm.refresh_field('items')
+		set_total_input_in_kg(frm, cdt, cdn);
+	}	
+}
+
 function set_input_in_kg(frm, cdt, cdn) {
 	let row = locals[cdt][cdn];
-	if (row.no_of_billets !== undefined && row.billet_length !== undefined && row.multiplication_factor !== undefined) {
+	if (row.no_of_billets !== undefined && row.billet_length !== undefined  && row.multiplication_factor !== undefined ) {
 		row.input_in_kg = (row.no_of_billets * row.billet_length * row.multiplication_factor)
+		frm.refresh_field('items')
+		set_total_input_in_kg(frm, cdt, cdn);
+	}
+}
+
+function set_total_input_in_kg(frm, cdt, cdn) {
+	let row = locals[cdt][cdn];
+	if (row.test_input_in_kg !== undefined && row.input_in_kg !== undefined ) {
+		row.total_input_in_kg = (row.test_input_in_kg + row.input_in_kg )
 		frm.refresh_field('items')
 	}
 }

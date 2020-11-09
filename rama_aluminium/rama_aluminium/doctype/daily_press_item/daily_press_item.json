@@ -103,6 +103,7 @@
    "fieldname": "input_in_kg",
    "fieldtype": "Float",
    "label": "Actual Input in Kg",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -169,11 +170,11 @@
    "label": "Billet Length (Test)"
   },
   {
-   "default": "0",
    "description": "For Test ,No of billet * Billet Length * Multiplication factor",
    "fieldname": "test_input_in_kg",
    "fieldtype": "Float",
-   "label": "Test Input in Kg"
+   "label": "Test Input in Kg",
+   "read_only": 1
   },
   {
    "description": "Test Input + Actual Input",
@@ -185,7 +186,7 @@
   }
  ],
  "istable": 1,
- "modified": "2020-11-06 12:54:21.272081",
+ "modified": "2020-11-09 17:21:13.083593",
  "modified_by": "Administrator",
  "module": "Rama Aluminium",
  "name": "Daily Press Item",

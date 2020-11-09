@@ -26,9 +26,11 @@ class DailyPress(Document):
 	def validate_items(self):
 		items=self.get("items")
 		for item in items:		
+			item.test_input_in_kg = flt(item.test_no_of_billets) * flt(item.test_billet_length) * flt(item.multiplication_factor)
 			item.input_in_kg=flt(item.no_of_billets) * flt(item.billet_length) * flt(item.multiplication_factor)
+			item.total_input_in_kg = flt(item.test_input_in_kg) + flt(item.input_in_kg)
 			item.output_in_kg =flt(item.actual_weight_per_meter) * flt(item.no_of_pcs) * flt(item.length)
-			if item.output_in_kg > item.input_in_kg:
+			if item.output_in_kg > item.total_input_in_kg:
 				frappe.throw(_("Row #{0}, Output is more than Input. This will make scrap negative. Cannot proceed.".format(item.idx))) 
 
 	def make_die_entries(self):
@@ -62,14 +64,14 @@ class DailyPress(Document):
 			source_warehouse=item_defaults.item_defaults[0].default_warehouse			
 			row.s_warehouse=source_warehouse
 			row.item_code=item.cast_item
-			row.qty=item.input_in_kg
+			row.qty=item.total_input_in_kg
 			row.uom=frappe.db.get_value('Item', item.cast_item, 'stock_uom')
 			args=frappe._dict({
 							"item_code": item.cast_item,
 							"warehouse": source_warehouse,
 							"posting_date": nowdate(),
 							"posting_time": nowtime(),
-							"qty": item.input_in_kg,
+							"qty": item.total_input_in_kg,
 							"serial_no": None,
 							"voucher_type": 'Stock Entry',
 							"voucher_no": None,
@@ -81,7 +83,7 @@ class DailyPress(Document):
 			row = stock_entry.append('items', {})
 			row.t_warehouse=fg_warehouse
 			row.item_code=item.item
-			row.basic_rate=(item.input_in_kg*get_incoming_rate(args))/item.output_in_kg
+			row.basic_rate=(item.total_input_in_kg*get_incoming_rate(args))/item.output_in_kg
 			row.qty=item.output_in_kg
 			row.uom=frappe.db.get_value('Item', item.item, 'stock_uom')			
 			# scrap item entry
@@ -90,7 +92,7 @@ class DailyPress(Document):
 			row.basic_rate=0
 			row.t_warehouse=default_scrap_item_warehouse_cf
 			row.item_code=default_scrap_item_cf
-			row.qty=flt(item.input_in_kg)-flt(item.output_in_kg)
+			row.qty=flt(item.total_input_in_kg)-flt(item.output_in_kg)
 			row.uom=frappe.db.get_value('Item',default_scrap_item_cf, 'stock_uom')			
 
 			stock_entry.insert(ignore_permissions=True)
