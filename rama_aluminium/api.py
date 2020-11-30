@@ -28,8 +28,12 @@ def quotation_calculate_price_by_weight(doc):
 		return 1
 	elif quotation.calculate_price_by_weight_cf==0:
 		for item in qo_items:
-			item.catalog_meter_weight_cf=item.weight_per_unit
-			item.total_weight_cf=item.total_weight
+			if item.length_cf== None or item.length_cf==0:
+				frappe.throw(_("Length cannot be blank for row # {0}").format(item.idx))
+			if item.catalog_meter_weight_cf == None:
+				item.catalog_meter_weight_cf=item.weight_per_unit
+			item.total_weight_cf=item.length_cf*item.qty*item.catalog_meter_weight_cf
+			item.total_weight= item.total_weight_cf
 			item.price_cf= item.rate
 		quotation.run_method("calculate_taxes_and_totals")
 		quotation.save()
