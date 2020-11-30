@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 import frappe
-from frappe.utils import flt, comma_or, nowdate
+from frappe.utils import flt, comma_or, nowdate,now
 from frappe.model.mapper import get_mapped_doc
 from frappe import _
 from frappe.utils import (flt, getdate, get_url, now,
@@ -93,7 +93,7 @@ def make_job_order(source_name, target_doc=None):
 		# target.run_method("calculate_taxes_and_totals")
 
 	def update_item(obj, target, source_parent):
-		target.from_time=nowtime()
+		target.from_time=now()
 		target.job_order=source_parent.name
 		target.item=obj.item
 		target.length=obj.length
