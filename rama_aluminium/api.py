@@ -126,29 +126,30 @@ def make_job_order(source_name, target_doc=None):
 
 @frappe.whitelist()
 def update_job_order_CT_packed_qty(self,method):
-	fg_warehouse=frappe.db.get_single_value('Manufacturing Settings', 'default_fg_warehouse')
-	job_order_item_name_ct = frappe.db.get_value('Daily Press Item', self.daily_press_item_name, 'job_order_item_name_ct')
-	items=self.get("items")
-	for item in items:
-		if item.t_warehouse==fg_warehouse and method == "on_submit":
-			frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', item.qty)
-			break
-		elif item.t_warehouse==fg_warehouse and method == "on_cancel":
-			existing_produced_qty=frappe.db.get_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty')
-			if existing_produced_qty>0:
-				frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', existing_produced_qty-item.qty)
-			else:
-				frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', 0)
-			break
+	if self.stock_entry_type=='Manufacture':
+		fg_warehouse=frappe.db.get_single_value('Manufacturing Settings', 'default_fg_warehouse')
+		job_order_item_name_ct = frappe.db.get_value('Daily Press Item', self.daily_press_item_name, 'job_order_item_name_ct')
+		items=self.get("items")
+		for item in items:
+			if item.t_warehouse==fg_warehouse and method == "on_submit":
+				frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', item.qty)
+				break
+			elif item.t_warehouse==fg_warehouse and method == "on_cancel":
+				existing_produced_qty=frappe.db.get_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty')
+				if existing_produced_qty>0:
+					frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', existing_produced_qty-item.qty)
+				else:
+					frappe.db.set_value('Job Order Item CT', job_order_item_name_ct, 'produced_qty', 0)
+				break
 
-	all_JO_produced_qty_correct=True		
-	job_order_name = frappe.db.get_value('Daily Press Item', self.daily_press_item_name, 'job_order')
-	JO=frappe.get_doc('Job Order CT', job_order_name)
-	for item in JO.get("items"):
-		if item.produced_qty < item.qty:	
-			all_JO_produced_qty_correct=False
-	if method == "on_submit" and all_JO_produced_qty_correct==True:
-		frappe.db.set_value('Job Order CT', job_order_name, 'status', 'Completed')
-	if method == "on_cancel" and all_JO_produced_qty_correct==False:
-		frappe.db.set_value('Job Order CT', job_order_name, 'status', 'In Process')		
+		all_JO_produced_qty_correct=True		
+		job_order_name = frappe.db.get_value('Daily Press Item', self.daily_press_item_name, 'job_order')
+		JO=frappe.get_doc('Job Order CT', job_order_name)
+		for item in JO.get("items"):
+			if item.produced_qty < item.qty:	
+				all_JO_produced_qty_correct=False
+		if method == "on_submit" and all_JO_produced_qty_correct==True:
+			frappe.db.set_value('Job Order CT', job_order_name, 'status', 'Completed')
+		if method == "on_cancel" and all_JO_produced_qty_correct==False:
+			frappe.db.set_value('Job Order CT', job_order_name, 'status', 'In Process')		
 
